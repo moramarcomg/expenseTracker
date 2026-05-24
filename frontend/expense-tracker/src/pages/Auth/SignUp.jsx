@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import AuthLayout from '../../components/layouts/AuthLayout'
 import Input from '../../components/Inputs/Input'
+import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector'
 import { validateEmail } from '../../utils/helper'
 
 const SignUp = () => {
@@ -17,6 +18,26 @@ const SignUp = () => {
   //Handle Sign Up Form Submit
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    let profilePicUrl = "";
+
+    if(!fullName){
+      setError("Please enter your full name");
+      return;
+    }
+    if(!validateEmail(email)){
+      setError("Please enter a valid email address");
+      return;
+    }
+    if(!password){
+      setError("Please enter your password");
+      return;
+    }
+
+    setError(null);
+
+    // Sign Up API Call
+
   }
 
   return (
@@ -24,10 +45,15 @@ const SignUp = () => {
       <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center">
         <h3 className="text-xl font-semibold text-black">Create an Account</h3>
         <p className="text-xs text-slate-700 mt-1.25 mb-6">
-          Join us today by entering your details below to create your account.
+          Join us today by entering your details below.
         </p>
 
         <form onSubmit={handleSignUp}>
+
+          <div className="flex justify-center">
+            <ProfilePhotoSelector image={profilePic} onImageSelect={setProfilePic} />
+          </div>
+          
           <div className="flex gap-4">
             <div className="flex-1">
               <Input
