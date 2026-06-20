@@ -1,5 +1,6 @@
-const XLSX = require("xlsx");              // Librería para generar archivos Excel
-const Expense = require("../models/Expense"); // Modelo de Mongoose para gastos
+const XLSX = require("xlsx");
+const Expense = require("../models/Expense");
+const Counter = require("../models/Counter");
 
 // exports.addExpense: función para crear un nuevo gasto
 // req.user.id viene del middleware protect (authMiddleware)
@@ -16,16 +17,21 @@ exports.addExpense = async (req, res) => {
         .json({ message: "Category, amount and date are required" });
     }
 
-    // new Expense({...}): crea una instancia del modelo (aún no guarda en BD)
+    const counter = await Counter.findOneAndUpdate(
+      { name: "expense" },
+      { $inc: { seq: 1 } },
+      { upsert: true, new: true },
+    );
+
     const newExpense = new Expense({
-      userId,                     // userId se asigna automáticamente del token
-      icon,                       // icon: string (tipo de gasto)
-      category,                   // category: "Food", "Transport", "Rent", etc.
-      amount,                     // amount: número (ej: 250)
-      date: new Date(date),       // new Date(date): convierte string ISO a objeto Date
+      userId,
+      transactionId: counter.seq,
+      icon,
+      category,
+      amount,
+      date: new Date(date),
     });
 
-    // newExpense.save(): guarda el documento en MongoDB (devuelve el documento guardado)
     await newExpense.save();
 
     // 201 = Created (recurso creado exitosamente)

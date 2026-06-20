@@ -1,5 +1,6 @@
 const XLSX = require("xlsx");
 const Income = require("../models/Income");
+const Counter = require("../models/Counter");
 
 // exports.addIncome: función para crear un nuevo ingreso
 // req.user.id viene del middleware protect (authMiddleware)
@@ -16,16 +17,24 @@ exports.addIncome = async (req, res) => {
         .json({ message: "Source, amount and date are required" });
     }
 
-    // new Income({...}): crea una instancia del modelo (aún no guarda en BD)
+    // findOneAndUpdate: busca el contador "income" y lo incrementa en 1
+    // upsert: true → si no existe el contador, lo crea con seq: 0
+    // new: true → devuelve el documento después del incremento
+    const counter = await Counter.findOneAndUpdate(
+      { name: "income" },
+      { $inc: { seq: 1 } },
+      { upsert: true, new: true },
+    );
+
     const newIncome = new Income({
-      userId, // userId se asigna automáticamente del token
-      icon, // icon: string (tipo de ingreso)
-      source, // source: "Salary", "Freelance", etc.
-      amount, // amount: número
-      date: new Date(date), // new Date(date): convierte string a objeto Date
+      userId,
+      transactionId: counter.seq, // ID consecutivo: 1, 2, 3...
+      icon,
+      source,
+      amount,
+      date: new Date(date),
     });
 
-    // newIncome.save(): guarda el documento en MongoDB (devuelve el documento guardado)
     await newIncome.save();
 
     // 201 = Created (recurso creado exitosamente)

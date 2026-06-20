@@ -7,6 +7,7 @@ const expenseSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    transactionId: { type: Number, unique: true },
     icon: { type: String },
     category: { type: String, required: true },
     amount: { type: Number, required: true },
