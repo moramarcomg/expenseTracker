@@ -6,24 +6,27 @@ import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector'
 import { validateEmail } from '../../utils/helper'
 
 const SignUp = () => {
+  // Cada useState crea una pieza de estado independiente
+  // null = no hay imagen seleccionada, "" = string vacío
   const [profilePic, setProfilePic] = useState(null);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null);  // null = sin error (distinto de "")
   
   const navigate = useNavigate();
 
-  //Handle Sign Up Form Submit
+  // async: permite usar await dentro (esperar respuestas del servidor)
   const handleSignUp = async (e) => {
-    e.preventDefault();
+    e.preventDefault();  // Previene recarga de página al enviar el form
 
-    let profilePicUrl = "";
+    let profilePicUrl = "";  // let: variable que puede cambiar de valor
 
-    if(!fullName){
+    // Validaciones del lado del cliente (antes de enviar al servidor)
+    if(!fullName){  // !fullName es true si fullName está vacío
       setError("Please enter your full name");
-      return;
+      return;        // return detiene la ejecución de la función
     }
     if(!validateEmail(email)){
       setError("Please enter a valid email address");
@@ -34,10 +37,11 @@ const SignUp = () => {
       return;
     }
 
-    setError(null);
+    setError(null);  // Limpia el error si todas las validaciones pasaron
 
-    // Sign Up API Call
-
+    // Aquí iría la llamada a la API de registro:
+    // const response = await axios.post("/api/v1/auth/register", { fullName, email, password });
+    // if(response.data.success) navigate("/dashboard");
   }
 
   return (
@@ -51,6 +55,12 @@ const SignUp = () => {
         <form onSubmit={handleSignUp}>
 
           <div className="flex justify-center">
+            {/*
+              ProfilePhotoSelector recibe dos props (propiedades):
+              - image: el valor actual de la imagen
+              - onImageSelect: función que se ejecuta cuando el usuario selecciona una imagen
+              setProfilePic actualiza el estado profilePic con la imagen seleccionada
+            */}
             <ProfilePhotoSelector image={profilePic} onImageSelect={setProfilePic} />
           </div>
           
@@ -82,6 +92,7 @@ const SignUp = () => {
             type="password"
           />
 
+          {/* Si error no es null, muestra el mensaje de error */}
           {error && <p className="text-red-500 text-xs pb-2.5">{error}</p>}
 
           <button
@@ -93,6 +104,7 @@ const SignUp = () => {
 
           <p className="text-[13px] text-slate-800 mt-3">
             Already have an account?{" "}
+            {/* {" "} es un espacio en JSX (los espacios normales se ignoran) */}
             <Link className="font-medium text-primary underline" to="/login">
               Log In
             </Link>

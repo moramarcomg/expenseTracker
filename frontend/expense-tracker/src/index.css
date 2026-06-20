@@ -1,27 +1,35 @@
+/* @import: trae una fuente desde Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* @import "tailwindcss": trae el framework Tailwind (clases utilitarias como flex, bg-red, etc.) */
 @import "tailwindcss";
 
+/* @theme: personaliza el tema de Tailwind con variables CSS */
 @theme{
-    --font-display: 'Poppins', sans-serif;
-    --breakpoint-3xl: 1920px;
-    --color-primary: #875cf5;
+    --font-display: 'Poppins', sans-serif;   /* Fuente principal */
+    --breakpoint-3xl: 1920px;                  /* Pantalla extra grande */
+    --color-primary: #875cf5;                  /* Color primario (violeta) */
 }
 
+/* @layer base: estilos base que se aplican a etiquetas HTML */
 @layer base {
     html{
-        font-family: var(--font-display);
+        font-family: var(--font-display);      /* Usa la fuente definida arriba */
     }
 
     body{
-        background-color: #fcfbfc;
-        overflow-x: hidden;
+        background-color: #fcfbfc;              /* Fondo claro */
+        overflow-x: hidden;                      /* Oculta scroll horizontal */
     }
 }
 
+/* @apply: usa clases de Tailwind dentro de CSS personalizado */
+/* .input-box: clase reutilizable para inputs */
 .input-box{
     @apply w-full flex justify-between gap-3 text-sm text-black bg-slate-100 rounded px-4 py-3 mb-4 mt-3 border border-slate-200 outline-none;
 }
 
+/* .btn-primary: clase reutilizable para botones */
 .btn-primary{
     @apply w-full text-sm font-medium text-white bg-violet-500 shadow-lg shadow-purple-600/5 p-2.5 rounded-md my-1 hover:bg-purple-600/15 hover:text-purple-600;
 }
