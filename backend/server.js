@@ -6,7 +6,8 @@ const path = require("path"); // path: módulo nativo de Node para manejar rutas
 const connectDB = require("./config/db"); // connectDB: función que conecta a MongoDB
 const authRoutes = require("./routes/authRoutes"); // Importa las rutas de autenticación
 const incomeRoutes = require("./routes/incomeRoutes"); // Importa las rutas de ingresos
-const expenseRoutes = require("./routes/expenseRoutes");
+const expenseRoutes = require("./routes/expenseRoutes"); // Importa las rutas de gastos
+const dashboardRoutes = require("./routes/dashboardRoutes"); // Importa las rutas del dashboard
 
 // app = express(): crea la aplicación servidor
 const app = express();
@@ -29,6 +30,7 @@ connectDB(); // Conecta a MongoDB al iniciar el servidor
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/income", incomeRoutes);
 app.use("/api/v1/expense", expenseRoutes);
+app.use("/api/v1/dashboard", dashboardRoutes);
 
 // express.static(): sirve archivos estáticos (imágenes subidas) desde la carpeta /uploads
 // path.join(__dirname, "uploads"): construye la ruta absoluta a la carpeta uploads
